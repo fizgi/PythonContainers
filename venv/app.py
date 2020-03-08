@@ -11,7 +11,7 @@ from collections import defaultdict, Counter
 
 def anagrams_lst(str1: str, str2: str) -> bool:
     """ returns True if str1 and str2 are anagrams, False if not """
-    return sorted(list(str1)) == sorted(list(str2))
+    return sorted(str1) == sorted(str2)
 
 
 def anagrams_dd(str1: str, str2: str) -> bool:
@@ -45,9 +45,9 @@ def covers_alphabet(sentence: str) -> bool:
 def web_analyzer(weblogs: List[Tuple[str, str]]) -> List[Tuple[str, List[str]]]:
     """ returns a summary of the weblogs with each distinct site
         and a sorted list of names of distinct people who visited that site """
-    ddict: DefaultDict[str, List[str]] = defaultdict(List[str])
+    ddict: DefaultDict[str, List[str]] = defaultdict(list)
 
-    for key in sorted([(log[1], log[0]) for log in set(weblogs)]):
-        ddict[key[0]] = sorted([log[0] for log in set(weblogs) if log[1] == key[0]])
+    for user, site in set(weblogs):
+        ddict[site].append(user)  # create a dictionary {site: [users]}
 
-    return list(ddict.items())
+    return [(key, sorted(ddict[key])) for key in sorted(ddict)]  # return alphabetized list
